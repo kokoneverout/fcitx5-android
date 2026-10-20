@@ -144,9 +144,11 @@ class LALMBackend(
                 .build()
 
             httpClient.newCall(httpRequest).executeAsync().use { response ->
-                parseLalmResponse(response.body.string(), response.code, saveApiDebug)
+                parseLalmResponse(
+                    response.body.string(), response.code, saveApiDebug,
+                    trimText = selectedText == null,
+                )
             }
         }
     }
-
 }

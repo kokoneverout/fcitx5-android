@@ -72,6 +72,15 @@ class LalmApiTest {
     }
 
     @Test
+    fun voiceEditsPreserveCodeIndentationAndTrailingNewline() {
+        val body = """{"choices":[{"message":{"content":"    val answer = 42\n"}}]}"""
+        assertEquals(
+            "    val answer = 42\n",
+            parseLalmResponse(body, 200, false, trimText = false).text,
+        )
+    }
+
+    @Test
     fun completeResponseIsOptInAndTranscriptionStaysSeparate() {
         val body = """{"choices":[{"message":{"content":"你好","reasoning_content":"private reasoning"},"finish_reason":"stop"}],"usage":{"prompt_tokens":20,"completion_tokens":5,"completion_tokens_details":{"reasoning_tokens":3}}}"""
         val result = parseLalmResponse(body, 200, true)

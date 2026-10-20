@@ -43,7 +43,12 @@ internal fun lalmThinkingType(mode: LalmThinkingMode): String = when (mode) {
     LalmThinkingMode.Enabled -> "enabled"
 }
 
-internal fun parseLalmResponse(body: String, statusCode: Int, saveDebug: Boolean): TranscriptionResult {
+internal fun parseLalmResponse(
+    body: String,
+    statusCode: Int,
+    saveDebug: Boolean,
+    trimText: Boolean = true,
+): TranscriptionResult {
     val rawResponseBody = if (saveDebug) body else ""
     if (statusCode !in 200..299) {
         throw TranscriptionException("LALM error: $statusCode", rawResponseBody)
@@ -72,7 +77,7 @@ internal fun parseLalmResponse(body: String, statusCode: Int, saveDebug: Boolean
             else -> error("Unsupported LALM content")
         }
         // reasoning_content is diagnostic data, never text to commit to the input field.
-        return TranscriptionResult(text = text.trim(), rawResponseBody = rawResponseBody)
+        return TranscriptionResult(text = if (trimText) text.trim() else text, rawResponseBody = rawResponseBody)
     } catch (_: Exception) {
         throw TranscriptionException("Invalid response from LALM", rawResponseBody)
     }
