@@ -35,7 +35,7 @@
 
 ## 验证
 
-推荐在 GitHub Actions 的 **Android APK and tests** 工作流中验证。推送到 `master`、`fix/**` 分支会自动运行，也可以手动启动。工作流先执行单元测试，再生成可安装的 ARM64 Debug APK，下载构建产物 `voicehub-arm64-v8a-debug` 即可，无需在本机配置 Android 构建环境。
+推荐在 GitHub Actions 的 **Android APK and tests** 工作流中验证。推送到 `master`、`fix/**` 分支会自动运行；工作流进入默认分支后也可手动启动。工作流先执行单元测试，再生成可安装的 ARM64 Debug APK，下载构建产物 `voicehub-arm64-v8a-debug` 即可，无需在本机配置 Android 构建环境。
 
 ```text
 ./gradlew :app:testDebugUnitTest --tests '*LalmApiTest' --tests '*VoiceBackendConfigurationTest'
