@@ -327,7 +327,7 @@
     <string name="voice_input_secret_configured">Configured</string>
     <string name="voice_input_secret_not_configured">Not configured</string>
     <string name="voice_input_save_history">Save transcription history</string>
-    <string name="voice_input_save_history_summary">Store result and request metadata on this device. Prompt text, raw responses, and screenshots are not saved.</string>
+    <string name="voice_input_save_history_summary">Store result and request metadata on this device. Raw responses are saved only when LALM API debugging is enabled. Prompt text and screenshots are not saved.</string>
     <string name="voice_input_surrounding_text">Send surrounding text</string>
     <string name="voice_input_surrounding_text_summary">Include text around the cursor and selected text used by voice edit.</string>
     <string name="voice_input_clipboard_context">Send clipboard text</string>
@@ -356,6 +356,13 @@
     <string name="voice_input_lalm_format_input_audio">input_audio (OpenAI standard)</string>
     <string name="voice_input_lalm_format_audio_url">audio_url (data URI)</string>
     <string name="voice_input_lalm_temperature">Temperature (optional)</string>
+    <string name="voice_input_lalm_format_input_audio_data_url">input_audio (Data URL / MiMo)</string>
+    <string name="voice_input_lalm_thinking">Thinking mode</string>
+    <string name="voice_input_lalm_thinking_auto">Automatic (off for MiMo V2.6, provider default otherwise)</string>
+    <string name="voice_input_lalm_thinking_disabled">Disabled</string>
+    <string name="voice_input_lalm_thinking_enabled">Enabled</string>
+    <string name="voice_input_lalm_save_api_debug">Save LALM API debug responses</string>
+    <string name="voice_input_lalm_save_api_debug_summary">Requires transcription history. Saves full API responses, including reasoning, token usage, and HTTP error bodies, on this device. Responses may contain private text. Enable temporarily for troubleshooting.</string>
     <string name="voice_input_lalm_voice_edit">Voice edit</string>
     <string name="voice_input_lalm_voice_edit_summary">When text is selected, voice input acts as an edit instruction (e.g. translate, rephrase) instead of dictating new text</string>
     <string name="accessibility_service_name">Fcitx5 screen text context</string>

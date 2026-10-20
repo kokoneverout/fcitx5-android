@@ -20,6 +20,7 @@ import org.fcitx.fcitx5.android.input.keyboard.LangSwitchBehavior
 import org.fcitx.fcitx5.android.input.keyboard.SpaceLongPressBehavior
 import org.fcitx.fcitx5.android.input.keyboard.SwipeSymbolDirection
 import org.fcitx.fcitx5.android.input.voice.LalmAudioFormat
+import org.fcitx.fcitx5.android.input.voice.LalmThinkingMode
 import org.fcitx.fcitx5.android.input.voice.VoiceBackendType
 import org.fcitx.fcitx5.android.input.picker.PickerWindow
 import org.fcitx.fcitx5.android.input.popup.EmojiModifier
@@ -514,6 +515,17 @@ class AppPrefs(
             "voice_input_lalm_temperature",
             ""
         )
+        val lalmThinkingMode = enumList(
+            R.string.voice_input_lalm_thinking,
+            "voice_input_lalm_thinking",
+            LalmThinkingMode.Auto
+        )
+        val lalmSaveApiDebug = switch(
+            R.string.voice_input_lalm_save_api_debug,
+            "voice_input_lalm_save_api_debug",
+            false,
+            R.string.voice_input_lalm_save_api_debug_summary
+        )
         val lalmVoiceEdit = switch(
             R.string.voice_input_lalm_voice_edit,
             "voice_input_lalm_voice_edit",
@@ -594,7 +606,8 @@ class AppPrefs(
                 "voice_input_lalm_url", "voice_input_lalm_api_key",
                 "voice_input_lalm_model", "voice_input_lalm_system_prompt",
                 "voice_input_lalm_audio_format", "voice_input_lalm_temperature",
-                "voice_input_lalm_voice_edit"
+                "voice_input_lalm_voice_edit", "voice_input_lalm_thinking",
+                "voice_input_lalm_save_api_debug"
             ), ctx)
         }
 

@@ -7,7 +7,6 @@ package org.fcitx.fcitx5.android.input.voice
 import android.util.Base64
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import kotlinx.serialization.Serializable
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonArray
@@ -34,6 +33,8 @@ class LALMBackend(
     private val getSystemPrompt: () -> String?,
     private val getAudioFormat: () -> LalmAudioFormat,
     private val getTemperature: () -> String?,
+    private val getThinkingMode: () -> LalmThinkingMode = { LalmThinkingMode.Auto },
+    private val getSaveApiDebug: () -> Boolean = { false },
 ) : VoiceBackend {
 
     override val name = "LALM"
@@ -64,23 +65,8 @@ class LALMBackend(
             val model = requireConfigured(getModel(), "LALM model")
             val baseUrl = requireSecureBaseUrl(getUrl(), "LALM API URL")
             val audioBase64 = Base64.encodeToString(audioBytes, Base64.NO_WRAP)
-            val audioFormat = if (mime.contains("mp3")) "mp3" else "wav"
-
-            val audioPart = when (getAudioFormat()) {
-                LalmAudioFormat.InputAudio -> JsonObject(mapOf(
-                    "type" to JsonPrimitive("input_audio"),
-                    "input_audio" to JsonObject(mapOf(
-                        "data" to JsonPrimitive(audioBase64),
-                        "format" to JsonPrimitive(audioFormat)
-                    ))
-                ))
-                LalmAudioFormat.AudioUrl -> JsonObject(mapOf(
-                    "type" to JsonPrimitive("audio_url"),
-                    "audio_url" to JsonObject(mapOf(
-                        "url" to JsonPrimitive("data:audio/$audioFormat;base64,$audioBase64")
-                    ))
-                ))
-            }
+            val audioPart = buildLalmAudioPart(getAudioFormat(), model, audioBase64, mime)
+            val saveApiDebug = getSaveApiDebug()
 
             val (systemPrompt, userText) = if (selectedText != null) {
                 // Edit mode: voice is an instruction to modify selected text
@@ -142,6 +128,9 @@ class LALMBackend(
             getTemperature()?.trim()?.toDoubleOrNull()?.let {
                 requestFields["temperature"] = JsonPrimitive(it)
             }
+            lalmThinkingType(getThinkingMode(), model)?.let {
+                requestFields["thinking"] = JsonObject(mapOf("type" to JsonPrimitive(it)))
+            }
 
             val requestJson = JsonObject(requestFields)
 
@@ -155,20 +144,7 @@ class LALMBackend(
                 .build()
 
             httpClient.newCall(httpRequest).executeAsync().use { response ->
-                if (!response.isSuccessful) {
-                    throw TranscriptionException(
-                        "LALM error: ${response.code}"
-                    )
-                }
-
-                val responseBody = response.body.string()
-                if (responseBody.isEmpty()) {
-                    throw TranscriptionException("Empty response from LALM")
-                }
-
-                val result = json.decodeFromString<ChatCompletionResponse>(responseBody)
-                val text = result.choices?.firstOrNull()?.message?.content ?: ""
-                TranscriptionResult(text = text)
+                parseLalmResponse(response.body.string(), response.code, saveApiDebug)
             }
         }
     }
@@ -200,18 +176,3 @@ class LALMBackend(
             "Execute the instruction precisely. Output ONLY the edited result text, no explanations, no markdown formatting, no quotes."
     }
 }
-
-@Serializable
-data class ChatCompletionResponse(
-    val choices: List<Choice>? = null,
-)
-
-@Serializable
-data class Choice(
-    val message: ChoiceMessage,
-)
-
-@Serializable
-data class ChoiceMessage(
-    val content: String,
-)

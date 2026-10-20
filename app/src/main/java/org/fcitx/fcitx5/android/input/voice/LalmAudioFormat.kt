@@ -10,4 +10,5 @@ import org.fcitx.fcitx5.android.data.prefs.ManagedPreferenceEnum
 enum class LalmAudioFormat(override val stringRes: Int) : ManagedPreferenceEnum {
     InputAudio(R.string.voice_input_lalm_format_input_audio),
     AudioUrl(R.string.voice_input_lalm_format_audio_url),
+    InputAudioDataUrl(R.string.voice_input_lalm_format_input_audio_data_url),
 }

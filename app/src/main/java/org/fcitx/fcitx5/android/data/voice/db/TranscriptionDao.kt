@@ -36,7 +36,10 @@ interface TranscriptionDao {
 
     @Query(
         "UPDATE ${TranscriptionRecord.TABLE_NAME} SET prompt = '', selectedText = '', " +
-            "rawResponseBody = '', screenshotBase64 = ''"
+            "screenshotBase64 = ''"
     )
     suspend fun redactSensitiveDetails()
+
+    @Query("UPDATE ${TranscriptionRecord.TABLE_NAME} SET rawResponseBody = ''")
+    suspend fun redactRawResponses()
 }

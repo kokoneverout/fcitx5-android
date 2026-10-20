@@ -4,4 +4,7 @@
  */
 package org.fcitx.fcitx5.android.input.voice
 
-class TranscriptionException(message: String) : Exception(message)
+class TranscriptionException(
+    message: String,
+    val rawResponseBody: String = "",
+) : Exception(message)

@@ -324,7 +324,7 @@
     <string name="voice_input_secret_configured">Настроено</string>
     <string name="voice_input_secret_not_configured">Не настроено</string>
     <string name="voice_input_save_history">Сохранять историю транскрипций</string>
-    <string name="voice_input_save_history_summary">Сохранять на этом устройстве результат и метаданные запроса. Текст промпта, необработанные ответы и снимки экрана не сохраняются.</string>
+    <string name="voice_input_save_history_summary">Сохранять на этом устройстве результат и метаданные запроса. Необработанные ответы сохраняются только при включённой отладке API LALM. Текст промпта и снимки экрана не сохраняются.</string>
     <string name="voice_input_surrounding_text">Отправлять текст вокруг курсора</string>
     <string name="voice_input_surrounding_text_summary">Включать текст вокруг курсора и выделенный текст, используемые для голосового редактирования.</string>
     <string name="voice_input_clipboard_context">Отправлять текст из буфера обмена</string>

@@ -14,6 +14,7 @@ import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
  */
 data class TranscriptionResult(
     val text: String,
+    val rawResponseBody: String = "",
 )
 
 /**

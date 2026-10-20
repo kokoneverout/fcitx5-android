@@ -56,7 +56,11 @@ object TranscriptionHistoryManager : CoroutineScope by CoroutineScope(Supervisor
     suspend fun insert(record: TranscriptionRecord): Long {
         initialization.await()
         return withContext(Dispatchers.IO) {
-            val id = dao.insert(record)
+            val prefs = AppPrefs.getInstance().voiceInput
+            if (!prefs.saveHistory.getValue()) return@withContext 0L
+            val id = dao.insert(
+                if (prefs.lalmSaveApiDebug.getValue()) record else record.copy(rawResponseBody = "")
+            )
             prune()
             Timber.d("Saved transcription record id=$id backend=${record.backendType} success=${record.success} duration=${record.durationMs}ms")
             id
@@ -91,6 +95,9 @@ object TranscriptionHistoryManager : CoroutineScope by CoroutineScope(Supervisor
     private suspend fun prune() {
         withContext(Dispatchers.IO) {
             dao.redactSensitiveDetails()
+            if (!AppPrefs.getInstance().voiceInput.lalmSaveApiDebug.getValue()) {
+                dao.redactRawResponses()
+            }
             dao.deleteOlderThan(System.currentTimeMillis() - RETENTION_DAYS * DAY_MILLIS)
             dao.trimTo(MAX_RECORDS)
         }

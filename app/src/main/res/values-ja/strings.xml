@@ -262,7 +262,7 @@
     <string name="voice_input_secret_configured">設定済み</string>
     <string name="voice_input_secret_not_configured">未設定</string>
     <string name="voice_input_save_history">文字起こし履歴を保存する</string>
-    <string name="voice_input_save_history_summary">結果とリクエストのメタデータをこのデバイスに保存します。プロンプトのテキスト、未加工のレスポンス、スクリーンショットは保存されません。</string>
+    <string name="voice_input_save_history_summary">結果とリクエストのメタデータをこのデバイスに保存します。未加工のレスポンスは LALM API デバッグ有効時のみ保存されます。プロンプトとスクリーンショットは保存されません。</string>
     <string name="voice_input_surrounding_text">周辺のテキストを送信する</string>
     <string name="voice_input_surrounding_text_summary">音声編集で使用するカーソル周辺のテキストと選択したテキストを含めます。</string>
     <string name="voice_input_clipboard_context">クリップボードのテキストを送信する</string>

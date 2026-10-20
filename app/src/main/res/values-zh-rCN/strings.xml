@@ -327,7 +327,7 @@
     <string name="voice_input_secret_configured">已配置</string>
     <string name="voice_input_secret_not_configured">未配置</string>
     <string name="voice_input_save_history">保存转录历史</string>
-    <string name="voice_input_save_history_summary">在本机保存结果和请求元数据，不保存提示词、原始响应和截图。</string>
+    <string name="voice_input_save_history_summary">在本机保存结果和请求元数据。仅开启 LALM API 调试时保存原始响应，不保存提示词和截图。</string>
     <string name="voice_input_surrounding_text">发送输入框上下文</string>
     <string name="voice_input_surrounding_text_summary">发送光标前后的文字，以及语音编辑使用的选中文字。</string>
     <string name="voice_input_clipboard_context">发送剪贴板文字</string>
@@ -356,6 +356,13 @@
     <string name="voice_input_lalm_format_input_audio">input_audio（OpenAI 标准）</string>
     <string name="voice_input_lalm_format_audio_url">audio_url（Data URI）</string>
     <string name="voice_input_lalm_temperature">Temperature（可选）</string>
+    <string name="voice_input_lalm_format_input_audio_data_url">input_audio（Data URL / MiMo）</string>
+    <string name="voice_input_lalm_thinking">深度思考模式</string>
+    <string name="voice_input_lalm_thinking_auto">自动（MiMo V2.6 关闭，其他模型遵循服务商默认值）</string>
+    <string name="voice_input_lalm_thinking_disabled">关闭</string>
+    <string name="voice_input_lalm_thinking_enabled">开启</string>
+    <string name="voice_input_lalm_save_api_debug">保存 LALM API 调试响应</string>
+    <string name="voice_input_lalm_save_api_debug_summary">需要开启转录历史。在本机保存完整 API 响应，包括思考内容、Token 用量和 HTTP 错误响应体，可能含有私人文本。建议仅在排查问题时临时开启。</string>
     <string name="voice_input_lalm_voice_edit">语音编辑</string>
     <string name="voice_input_lalm_voice_edit_summary">当选中文字时，语音输入将作为编辑指令（如翻译、润色）而非输入新文本</string>
     <string name="accessibility_service_name">小企鹅输入法屏幕上下文</string>

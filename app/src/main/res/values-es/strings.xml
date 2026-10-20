@@ -132,7 +132,7 @@
     <string name="voice_input_secret_configured">Configurado</string>
     <string name="voice_input_secret_not_configured">Sin configurar</string>
     <string name="voice_input_save_history">Guardar historial de transcripciones</string>
-    <string name="voice_input_save_history_summary">Guarda el resultado y los metadatos de la solicitud en este dispositivo. No se guardan el texto del prompt, las respuestas sin procesar ni las capturas de pantalla.</string>
+    <string name="voice_input_save_history_summary">Guarda el resultado y los metadatos de la solicitud en este dispositivo. Las respuestas sin procesar solo se guardan al activar la depuración de la API LALM. No se guardan el texto del prompt ni las capturas de pantalla.</string>
     <string name="voice_input_surrounding_text">Enviar texto circundante</string>
     <string name="voice_input_surrounding_text_summary">Incluye el texto alrededor del cursor y el texto seleccionado que se usan para la edición por voz.</string>
     <string name="voice_input_clipboard_context">Enviar texto del portapapeles</string>

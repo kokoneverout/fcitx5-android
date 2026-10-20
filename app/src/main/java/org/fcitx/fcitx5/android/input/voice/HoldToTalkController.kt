@@ -81,6 +81,8 @@ class HoldToTalkController(private val service: FcitxInputMethodService) {
             getSystemPrompt = { prefs.lalmSystemPrompt.getValue() },
             getAudioFormat = { prefs.lalmAudioFormat.getValue() },
             getTemperature = { prefs.lalmTemperature.getValue() },
+            getThinkingMode = { prefs.lalmThinkingMode.getValue() },
+            getSaveApiDebug = { prefs.saveHistory.getValue() && prefs.lalmSaveApiDebug.getValue() },
         )
     }
     private val subscriptionBackend by lazy {
@@ -275,16 +277,17 @@ class HoldToTalkController(private val service: FcitxInputMethodService) {
                     return@onSuccess
                 }
                 val text = transcriptionResult.text
-                // Save successful transcription record
+                // Keep empty API responses available for diagnosis and retry.
                 saveRecord(
                     backendType = backend.name,
                     editMode = selectedText != null,
                     resultText = text,
-                    success = true,
+                    success = text.isNotBlank(),
                     errorMessage = "",
                     durationMs = durationMs,
                     audioDurationSec = audioDurationSec,
                     audioSizeBytes = audioSize,
+                    rawResponseBody = transcriptionResult.rawResponseBody,
                 )
 
                 if (text.isNotBlank()) {
@@ -324,6 +327,7 @@ class HoldToTalkController(private val service: FcitxInputMethodService) {
                     durationMs = durationMs,
                     audioDurationSec = audioDurationSec,
                     audioSizeBytes = audioSize,
+                    rawResponseBody = (error as? TranscriptionException)?.rawResponseBody.orEmpty(),
                 )
                 // Cache for retry
                 cachedAudio = audioBytes
@@ -370,6 +374,7 @@ class HoldToTalkController(private val service: FcitxInputMethodService) {
         durationMs: Long,
         audioDurationSec: Float,
         audioSizeBytes: Long,
+        rawResponseBody: String = "",
     ) {
         if (!prefs.saveHistory.getValue()) return
         try {
@@ -382,7 +387,7 @@ class HoldToTalkController(private val service: FcitxInputMethodService) {
                 success = success,
                 errorMessage = errorMessage,
                 durationMs = durationMs,
-                rawResponseBody = "",
+                rawResponseBody = if (prefs.lalmSaveApiDebug.getValue()) rawResponseBody else "",
                 audioDurationSec = audioDurationSec,
                 audioSizeBytes = audioSizeBytes,
                 screenshotBase64 = "",
