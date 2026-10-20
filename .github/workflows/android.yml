@@ -1,4 +1,4 @@
-name: Android APK and tests
+name: Android Release APK and tests
 
 on:
   push:
@@ -21,6 +21,7 @@ jobs:
     env:
       BUILD_ABI: arm64-v8a
       CMAKE_VERSION: 3.31.6
+      BUILD_VERSION_NAME: 0.1.3-mimo.1
     steps:
       - name: Fetch source code
         uses: actions/checkout@v6
@@ -60,14 +61,39 @@ jobs:
           done
           exit 1
 
-      - name: Build installable debug APK
-        run: ./gradlew :app:assembleDebug --console=plain
+      - name: Build signed Release APK
+        env:
+          SIGN_KEY_BASE64: ${{ secrets.SIGN_KEY_BASE64 }}
+          SIGN_KEY_PWD: ${{ secrets.SIGN_KEY_PWD }}
+          SIGN_KEY_ALIAS: ${{ secrets.SIGN_KEY_ALIAS }}
+        run: |
+          : "${SIGN_KEY_BASE64:?Release signing key is not configured}"
+          : "${SIGN_KEY_PWD:?Release signing password is not configured}"
+          : "${SIGN_KEY_ALIAS:?Release signing alias is not configured}"
+          ./gradlew :app:assembleRelease --console=plain
+
+      - name: Verify Release signature and checksum
+        run: |
+          for apk in app/build/outputs/apk/release/*.apk; do
+            "$ANDROID_HOME/build-tools/36.1.0/apksigner" verify --verbose --print-certs "$apk" | tee "$RUNNER_TEMP/apk-signature.txt"
+            grep -qi 'C33884CDE597C0AF4D3302B52CD220D20B3934D31F66EE55302FF436947FF477' "$RUNNER_TEMP/apk-signature.txt"
+            "$ANDROID_HOME/build-tools/36.1.0/aapt" dump badging "$apk" > "$RUNNER_TEMP/apk-badging.txt"
+            grep -q "package: name='org.fcitx.fcitx5.android'" "$RUNNER_TEMP/apk-badging.txt"
+            if grep -q '^application-debuggable' "$RUNNER_TEMP/apk-badging.txt"; then
+              echo 'Release APK must not be debuggable'
+              exit 1
+            fi
+          done
+          cd app/build/outputs/apk/release
+          sha256sum *.apk > SHA256SUMS.txt
 
       - name: Upload APK
         uses: actions/upload-artifact@v6
         with:
-          name: voicehub-arm64-v8a-debug
-          path: app/build/outputs/apk/debug/*.apk
+          name: voicehub-arm64-v8a-release
+          path: |
+            app/build/outputs/apk/release/*.apk
+            app/build/outputs/apk/release/SHA256SUMS.txt
           if-no-files-found: error
 
       - name: Upload test reports

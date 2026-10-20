@@ -1,4 +1,25 @@
-# Release Runbook (个人 fork)
+# Release 构建（kokoneverout fork）
+
+当前版本：`0.1.3-mimo.1`，ARM64 版本号：`112`。
+
+所有编译均在 GitHub Actions 的 **Android Release APK and tests** 中执行。本机只保留源码和发布签名备份，无需配置 Android 构建环境。
+
+1. 仓库的 Actions Secrets 中配置 `SIGN_KEY_BASE64`（PKCS12 密钥文件的 Base64）、`SIGN_KEY_PWD` 和 `SIGN_KEY_ALIAS`。
+2. 推送到 `master` 或 `fix/**` 分支，自动运行全套单元测试、Release 构建、签名验证和 SHA-256 文件校验。
+3. 在成功运行的 Artifacts 中下载 `voicehub-arm64-v8a-release`，解压后安装 APK。`SHA256SUMS.txt` 为对应文件的校验和。
+4. 后续发版沿用同一密钥，并递增 `Versions.kt` 中的 `baseVersionCode`，同时更新工作流中的 `BUILD_VERSION_NAME`。
+
+发布证书 SHA-256：
+
+```text
+C3:38:84:CD:E5:97:C0:AF:4D:33:02:B5:2C:D2:20:D2:0B:39:34:D3:1F:66:EE:55:30:2F:F4:36:94:7F:F4:77
+```
+
+本 fork 使用独立签名，可与之前的 Debug 测试版并存；无法直接覆盖使用其他签名的上游 Release。密钥和密码须在仓库之外保存并备份，不能提交到 Git 或作为公开构建产物上传。
+
+---
+
+## 上游作者的历史发布记录（以下不适用于本 fork）
 
 本仓库个人线(`heimoshuiyu/fcitx5-android`,master → remote `fork`)的发版流程。
 上游 CI(`publish.yml`)只发布 Gradle 构件到 Maven,**APK Release 全程手动**。

@@ -356,7 +356,6 @@
     <string name="voice_input_lalm_temperature">Temperature（選填）</string>
     <string name="voice_input_lalm_format_input_audio_data_url">input_audio（Data URL / MiMo）</string>
     <string name="voice_input_lalm_thinking">深度思考模式</string>
-    <string name="voice_input_lalm_thinking_auto">自動（MiMo V2.6 關閉，其他模型遵循服務商預設值）</string>
     <string name="voice_input_lalm_thinking_disabled">關閉</string>
     <string name="voice_input_lalm_thinking_enabled">開啟</string>
     <string name="voice_input_lalm_save_api_debug">儲存 LALM API 偵錯回應</string>

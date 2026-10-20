@@ -358,7 +358,6 @@
     <string name="voice_input_lalm_temperature">Temperature (optional)</string>
     <string name="voice_input_lalm_format_input_audio_data_url">input_audio (Data URL / MiMo)</string>
     <string name="voice_input_lalm_thinking">Thinking mode</string>
-    <string name="voice_input_lalm_thinking_auto">Automatic (off for MiMo V2.6, provider default otherwise)</string>
     <string name="voice_input_lalm_thinking_disabled">Disabled</string>
     <string name="voice_input_lalm_thinking_enabled">Enabled</string>
     <string name="voice_input_lalm_save_api_debug">Save LALM API debug responses</string>

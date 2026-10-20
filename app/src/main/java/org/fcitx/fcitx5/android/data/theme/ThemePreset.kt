@@ -6,6 +6,58 @@ package org.fcitx.fcitx5.android.data.theme
 
 object ThemePreset {
 
+    val WeChatLight = Theme.Builtin(
+        name = "微信风格·浅色（参考图校色）",
+        isDark = false,
+        backgroundColor = 0xffdcdde2,
+        barColor = 0xffe5e6ea,
+        keyboardColor = 0xffdcdde2,
+        keyBackgroundColor = 0xfffcfcfc,
+        keyTextColor = 0xff191919,
+        candidateTextColor = 0xff191919,
+        candidateLabelColor = 0xff85898f,
+        candidateCommentColor = 0xff85898f,
+        altKeyBackgroundColor = 0xffb8bdc3,
+        altKeyTextColor = 0xff191919,
+        accentKeyBackgroundColor = 0xffb8bdc3,
+        accentKeyTextColor = 0xff191919,
+        keyPressHighlightColor = 0xffcdd1d6,
+        keyShadowColor = 0xffadb1b7,
+        popupBackgroundColor = 0xfffcfcfc,
+        popupTextColor = 0xff191919,
+        spaceBarColor = 0xfffcfcfc,
+        dividerColor = 0xffcfd1d6,
+        clipboardEntryColor = 0xfffcfcfc,
+        genericActiveBackgroundColor = 0xff07c160,
+        genericActiveForegroundColor = 0xffffffff
+    )
+
+    val WeChatDark = Theme.Builtin(
+        name = "微信风格·深色（亮键）",
+        isDark = true,
+        backgroundColor = 0xff202020,
+        barColor = 0xff202020,
+        keyboardColor = 0xff202020,
+        keyBackgroundColor = 0xff595959,
+        keyTextColor = 0xfff2f2f2,
+        candidateTextColor = 0xfff2f2f2,
+        candidateLabelColor = 0xff999999,
+        candidateCommentColor = 0xff999999,
+        altKeyBackgroundColor = 0xff2b2b2b,
+        altKeyTextColor = 0xfff2f2f2,
+        accentKeyBackgroundColor = 0xff07c160,
+        accentKeyTextColor = 0xffffffff,
+        keyPressHighlightColor = 0xff505050,
+        keyShadowColor = 0xff171717,
+        popupBackgroundColor = 0xff363636,
+        popupTextColor = 0xfff2f2f2,
+        spaceBarColor = 0xff363636,
+        dividerColor = 0xff171717,
+        clipboardEntryColor = 0xff363636,
+        genericActiveBackgroundColor = 0xff07c160,
+        genericActiveForegroundColor = 0xffffffff
+    )
+
     val MaterialLight = Theme.Builtin(
         name = "MaterialLight",
         isDark = false,

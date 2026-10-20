@@ -8,7 +8,6 @@ import org.fcitx.fcitx5.android.R
 import org.fcitx.fcitx5.android.data.prefs.ManagedPreferenceEnum
 
 enum class LalmThinkingMode(override val stringRes: Int) : ManagedPreferenceEnum {
-    Auto(R.string.voice_input_lalm_thinking_auto),
-    Disabled(R.string.voice_input_lalm_thinking_disabled),
     Enabled(R.string.voice_input_lalm_thinking_enabled),
+    Disabled(R.string.voice_input_lalm_thinking_disabled),
 }

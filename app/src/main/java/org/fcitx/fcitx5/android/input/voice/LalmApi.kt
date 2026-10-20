@@ -38,10 +38,7 @@ internal fun buildLalmAudioPart(
     }
 }
 
-internal fun lalmThinkingType(mode: LalmThinkingMode, model: String): String? = when (mode) {
-    LalmThinkingMode.Auto -> if (
-        model.substringAfterLast('/').startsWith("mimo-v2.6-", ignoreCase = true)
-    ) "disabled" else null
+internal fun lalmThinkingType(mode: LalmThinkingMode): String = when (mode) {
     LalmThinkingMode.Disabled -> "disabled"
     LalmThinkingMode.Enabled -> "enabled"
 }
@@ -75,7 +72,7 @@ internal fun parseLalmResponse(body: String, statusCode: Int, saveDebug: Boolean
             else -> error("Unsupported LALM content")
         }
         // reasoning_content is diagnostic data, never text to commit to the input field.
-        return TranscriptionResult(text = text, rawResponseBody = rawResponseBody)
+        return TranscriptionResult(text = text.trim(), rawResponseBody = rawResponseBody)
     } catch (_: Exception) {
         throw TranscriptionException("Invalid response from LALM", rawResponseBody)
     }

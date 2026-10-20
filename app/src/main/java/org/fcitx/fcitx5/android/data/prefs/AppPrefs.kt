@@ -518,7 +518,7 @@ class AppPrefs(
         val lalmThinkingMode = enumList(
             R.string.voice_input_lalm_thinking,
             "voice_input_lalm_thinking",
-            LalmThinkingMode.Auto
+            LalmThinkingMode.Enabled
         )
         val lalmSaveApiDebug = switch(
             R.string.voice_input_lalm_save_api_debug,

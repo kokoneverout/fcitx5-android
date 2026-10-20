@@ -6,7 +6,8 @@
 - API Key：你自己的 API Key
 - 模型：`mimo-v2.6-flash`
 - 音频格式：原有 `input_audio` 会根据 MiMo 模型名称自动使用 Data URL；也可显式选择 `input_audio（Data URL / MiMo）`，适用于模型别名代理。
-- 深度思考模式：默认“自动”，对 MiMo V2.6 发送 `thinking.type=disabled`，其他模型不额外发送参数。可手动选择开启或关闭。
+- 深度思考模式：仅保留“开启”和“关闭”，默认开启。所有模型统一遵循用户选择，不再针对 MiMo 自动关闭。旧版“自动”设置升级后恢复为默认开启，显式选择的开启或关闭保持不变。
+- 系统提示词：留空使用内置的高精度、多语言转写提示词；自定义内容仍优先生效。语音编辑继续使用专用编辑提示词。
 
 `input_audio` 的 MiMo 请求形式为：
 
@@ -35,7 +36,11 @@
 
 ## 验证
 
-推荐在 GitHub Actions 的 **Android APK and tests** 工作流中验证。推送到 `master`、`fix/**` 分支会自动运行；工作流进入默认分支后也可手动启动。工作流先执行单元测试，再生成可安装的 ARM64 Debug APK，下载构建产物 `voicehub-arm64-v8a-debug` 即可，无需在本机配置 Android 构建环境。
+推荐在 GitHub Actions 的 **Android Release APK and tests** 工作流中验证。推送到 `master`、`fix/**` 分支会自动运行；工作流进入默认分支后也可手动启动。工作流先执行单元测试，再生成签名的 ARM64 Release APK，并验证发布证书和文件校验和。下载构建产物 `voicehub-arm64-v8a-release` 即可，无需在本机配置 Android 构建环境。
+
+仓库需配置 `SIGN_KEY_BASE64`、`SIGN_KEY_PWD`、`SIGN_KEY_ALIAS` 三项 GitHub Actions Secrets。签名文件和密码不要提交到 Git。
+
+主题列表新增“微信风格·浅色（参考图校色）”和“微信风格·深色（亮键）”，配色逐项保留导入主题的原始值。
 
 ```text
 ./gradlew :app:testDebugUnitTest --tests '*LalmApiTest' --tests '*VoiceBackendConfigurationTest'

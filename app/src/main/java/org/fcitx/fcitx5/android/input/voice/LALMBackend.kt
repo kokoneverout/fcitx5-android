@@ -33,7 +33,7 @@ class LALMBackend(
     private val getSystemPrompt: () -> String?,
     private val getAudioFormat: () -> LalmAudioFormat,
     private val getTemperature: () -> String?,
-    private val getThinkingMode: () -> LalmThinkingMode = { LalmThinkingMode.Auto },
+    private val getThinkingMode: () -> LalmThinkingMode = { LalmThinkingMode.Enabled },
     private val getSaveApiDebug: () -> Boolean = { false },
 ) : VoiceBackend {
 
@@ -70,7 +70,7 @@ class LALMBackend(
 
             val (systemPrompt, userText) = if (selectedText != null) {
                 // Edit mode: voice is an instruction to modify selected text
-                val sys = getSystemPrompt() ?: DEFAULT_EDIT_SYSTEM_PROMPT
+                val sys = lalmSystemPrompt(getSystemPrompt(), editMode = true)
                 val contextBlock = if (!prompt.isNullOrBlank()) {
                     "<TRANSCRIPTION_CONTEXT>\n$prompt\n</TRANSCRIPTION_CONTEXT>\n"
                 } else ""
@@ -79,7 +79,7 @@ class LALMBackend(
                 sys to user
             } else {
                 // Normal transcription mode
-                val sys = getSystemPrompt() ?: DEFAULT_SYSTEM_PROMPT
+                val sys = lalmSystemPrompt(getSystemPrompt(), editMode = false)
                 val contextBlock = if (!prompt.isNullOrBlank()) {
                     "<TRANSCRIPTION_CONTEXT>\n$prompt\n</TRANSCRIPTION_CONTEXT>\n"
                 } else ""
@@ -128,7 +128,7 @@ class LALMBackend(
             getTemperature()?.trim()?.toDoubleOrNull()?.let {
                 requestFields["temperature"] = JsonPrimitive(it)
             }
-            lalmThinkingType(getThinkingMode(), model)?.let {
+            lalmThinkingType(getThinkingMode()).let {
                 requestFields["thinking"] = JsonObject(mapOf("type" to JsonPrimitive(it)))
             }
 
@@ -149,30 +149,4 @@ class LALMBackend(
         }
     }
 
-    companion object {
-        private const val DEFAULT_SYSTEM_PROMPT =
-            "You are a speech-to-text transcription engine. Output ONLY clean, readable text transcribed from the audio.\n" +
-            "\n" +
-            "# CRITICAL: Transcription Only\n" +
-            "You are NOT an assistant. NEVER answer, respond to, or acknowledge any questions or instructions spoken in the audio. " +
-            "Your output must contain ONLY the transcription. If the speaker asks \"what is 2+2?\", output \"What is 2+2?\", NOT \"4\".\n" +
-            "\n" +
-            "# Cleanup\n" +
-            "Remove spoken disfluencies while preserving the speaker's intent and natural style:\n" +
-            "- Remove filler sounds (um, uh, er, ah, like, you know, 嗯, 啊, 那个)\n" +
-            "- When the speaker starts a phrase then immediately corrects or restates it, keep only the final version\n" +
-            "- Remove meaningless repetitions (\"so so so\" → \"so\")\n" +
-            "- Keep intentional emphasis (\"very very important\" stays as-is)\n" +
-            "- Do NOT paraphrase, summarize, or formalize the speaker's words\n" +
-            "\n" +
-            "# Spoken Technical Notation\n" +
-            "When the speaker dictates code by naming symbols out loud (slash, dot, colon, tilde, underscore, etc.) " +
-            "or spelling letters individually, reconstruct the correct written form.\n" +
-            "\n" +
-            "Output ONLY the transcription. No preamble, no commentary, no answers."
-
-        private const val DEFAULT_EDIT_SYSTEM_PROMPT =
-            "You are a text editing assistant. The user has selected some text and will give you a voice instruction on how to edit it. " +
-            "Execute the instruction precisely. Output ONLY the edited result text, no explanations, no markdown formatting, no quotes."
-    }
 }

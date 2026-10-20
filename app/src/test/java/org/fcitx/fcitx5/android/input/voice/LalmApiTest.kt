@@ -7,7 +7,6 @@ package org.fcitx.fcitx5.android.input.voice
 import kotlinx.serialization.json.Json
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
-import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Test
 
@@ -56,17 +55,20 @@ class LalmApiTest {
     }
 
     @Test
-    fun automaticThinkingDisablesOnlyMimoV26() {
-        assertEquals("disabled", lalmThinkingType(LalmThinkingMode.Auto, "mimo-v2.6-flash"))
-        assertEquals("disabled", lalmThinkingType(LalmThinkingMode.Auto, "xiaomi/mimo-v2.6-flash"))
-        assertNull(lalmThinkingType(LalmThinkingMode.Auto, "gpt-4o-audio-preview"))
-        assertNull(lalmThinkingType(LalmThinkingMode.Auto, "mimo-v2.5-asr"))
+    fun thinkingHasOnlyExplicitOnAndOffModes() {
+        assertEquals(listOf(LalmThinkingMode.Enabled, LalmThinkingMode.Disabled), LalmThinkingMode.entries)
     }
 
     @Test
     fun thinkingCanBeExplicitlyEnabledOrDisabled() {
-        assertEquals("enabled", lalmThinkingType(LalmThinkingMode.Enabled, "mimo-v2.6-flash"))
-        assertEquals("disabled", lalmThinkingType(LalmThinkingMode.Disabled, "custom"))
+        assertEquals("enabled", lalmThinkingType(LalmThinkingMode.Enabled))
+        assertEquals("disabled", lalmThinkingType(LalmThinkingMode.Disabled))
+    }
+
+    @Test
+    fun transcriptionHasNoLeadingOrTrailingWhitespace() {
+        val body = """{"choices":[{"message":{"content":"  \n你好。\nHello.\n  "}}]}"""
+        assertEquals("你好。\nHello.", parseLalmResponse(body, 200, false).text)
     }
 
     @Test
